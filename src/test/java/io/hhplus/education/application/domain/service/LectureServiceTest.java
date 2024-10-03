@@ -17,8 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -216,5 +215,16 @@ public class LectureServiceTest {
     void decrementRemainCapacitySuccess() {
         lectureService.decrementRemainCapacity(1L);
         verify(lectureRepository).decrementRemainCapacity(1L);
+    }
+
+    @Test
+    @DisplayName("특강 신청 여부 확인 성공")
+    void isExistRegisteredLectureSuccess() {
+        when(lectureRepository.isExistRegisteredLecture(1L, 1L)).thenReturn(true);
+
+        boolean isExistLecture = lectureService.isExistRegisteredLecture(1L, 1L);
+
+        assertTrue(isExistLecture);
+        verify(lectureRepository).isExistRegisteredLecture(1L, 1L);
     }
 }

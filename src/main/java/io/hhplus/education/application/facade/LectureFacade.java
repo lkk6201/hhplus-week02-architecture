@@ -26,12 +26,9 @@ public class LectureFacade {
     @Transactional
     public LectureRegistrationDto registerLecture(LectureRequestDto lectureRequestDto) {
         // 이미 수강신청한 특강인지 확인
-        List<LectureRegistrationResponseDto> registeredLectures = lectureService.getRegisteredLecturesByStudentId(lectureRequestDto.getStudentId());
-        registeredLectures.forEach(dto -> {
-           if (dto.getLectureScheduleId().equals(lectureRequestDto.getLectureScheduleId())) {
-               throw new RuntimeException("이미 수강 신청한 특강입니다.");
-           }
-        });
+        if (lectureService.isExistRegisteredLecture(lectureRequestDto.getLectureScheduleId(), lectureRequestDto.getStudentId())) {
+            throw new RuntimeException("이미 수강 신청한 특강입니다.");
+        }
 
         // 잔여좌석이 없는 경우
         LectureScheduleDto lectureScheduleDto = lectureService.getLectureScheduleById(lectureRequestDto.getLectureId());
