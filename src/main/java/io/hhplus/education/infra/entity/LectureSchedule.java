@@ -5,12 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
+@NoArgsConstructor
+@Entity
 public class LectureSchedule extends BaseTimeEntity {
 
     @Id
@@ -27,5 +30,13 @@ public class LectureSchedule extends BaseTimeEntity {
 
     public void decrementRemainCapacity() {
         remainCapacity -= 1;
+    }
+
+    @Builder
+    public LectureSchedule(Long lectureId, Long maxCapacity, Long remainCapacity, LocalDateTime expireDate) {
+        this.lectureId = lectureId;
+        this.maxCapacity = maxCapacity;
+        this.remainCapacity = remainCapacity;
+        this.expireDate = expireDate;
     }
 }
