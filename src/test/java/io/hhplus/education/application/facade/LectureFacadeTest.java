@@ -1,7 +1,7 @@
 package io.hhplus.education.application.facade;
 
-import io.hhplus.education.application.domain.service.LectureService;
 import io.hhplus.education.infra.entity.Lecture;
+import io.hhplus.education.infra.entity.LectureRegistration;
 import io.hhplus.education.infra.entity.LectureSchedule;
 import io.hhplus.education.infra.repository.LectureJpaRepository;
 import io.hhplus.education.infra.repository.LectureScheduleJpaRepository;
@@ -66,7 +66,7 @@ public class LectureFacadeTest {
         List<Callable<Boolean>> tasks = new ArrayList<>();
 
         for (int i = 0; i < concurrentRequests; i++) {
-            Long testUserId = (long)i;
+            Long testUserId = (long) i;
             tasks.add(() -> {
                 try {
                     LectureRequestDto requestDto = new LectureRequestDto(lecture.getId(), lectureSchedule.getId(), testUserId);
@@ -90,4 +90,27 @@ public class LectureFacadeTest {
 
         assertEquals(30, successfulRegistrations);
     }
+
+    @Test
+    @DisplayName("같은 사용자가 동일 특강에 대해 1번만 신청 성공하는 테스트")
+    void allowSingleRegistrationPerUser() {
+
+        int tryCount = 5;
+        int successCount = 0;
+        int failCount = 0;
+
+        for (int i = 0; i < tryCount; i++) {
+            try {
+                LectureRequestDto requestDto = new LectureRequestDto(lecture.getId(), lectureSchedule.getId(), 1L);
+                lectureFacade.registerLecture(requestDto);
+                successCount++;
+            } catch (RuntimeException e) {
+                failCount++;
+            }
+        }
+
+        assertEquals(1, successCount);
+        assertEquals(4, failCount);
+    }
 }
+
