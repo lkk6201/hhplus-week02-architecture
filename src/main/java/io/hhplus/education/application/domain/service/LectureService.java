@@ -42,4 +42,8 @@ public class LectureService {
     public void decrementRemainCapacity(Long lectureScheduleId) {
         lectureRepository.decrementRemainCapacity(lectureScheduleId);
     }
+
+    public boolean isExistRegisteredLecture(Long lectureScheduleId, Long studentId) {
+        return lectureRepository.isExistRegisteredLecture(lectureScheduleId, studentId);
+    }
 }

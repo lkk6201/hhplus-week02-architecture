@@ -17,4 +17,7 @@ public interface LectureScheduleJpaRepository extends JpaRepository<LectureSched
             "WHERE ls.expireDate > :targetDate AND ls.remainCapacity > 0 AND lr.studentId IS NULL")
     List<LectureSchedule> findAvailableLecturesByStudentId(@Param("targetDate") LocalDateTime targetDate,
                                                            @Param("studentId")Long studentId);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<LectureSchedule> findById(Long id);
 }

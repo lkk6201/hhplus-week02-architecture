@@ -86,4 +86,9 @@ public class LectureRepositoryImpl implements LectureRepository {
         schedule.decrementRemainCapacity();
         lectureScheduleJpaRepository.save(schedule);
     }
+
+    @Override
+    public boolean isExistRegisteredLecture(Long lectureScheduleId, Long studentId) {
+        return lectureRegistrationJpaRepository.findByLectureScheduleIdAndStudentId(lectureScheduleId, studentId).isPresent();
+    }
 }

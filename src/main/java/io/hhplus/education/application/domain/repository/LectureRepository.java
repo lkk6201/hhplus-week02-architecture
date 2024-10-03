@@ -23,4 +23,6 @@ public interface LectureRepository {
     LectureScheduleDto findLectureScheduleById(Long lectureScheduleId);
 
     void decrementRemainCapacity(Long lectureScheduleId);
+
+    boolean isExistRegisteredLecture(Long lectureScheduleId, Long studentId);
 }
